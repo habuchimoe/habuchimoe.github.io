@@ -8,18 +8,18 @@
   
     <meta name="keywords" content="HabuchiMoe,HabuchiMoe's Blog" />
   
-  <meta name="description" content="复制产生新的主服务器配置文件redis.windows_M.conf  修改端口号为：6000   修改密码为：123456注：仅修改两项  复制产生新的从服务器配置文件redis.windows_S1.conf  修改端口号为：6001   修改密码为：123456（建议与主服务器密码一样）   修改并设置主服务器地址与端口   12345#slaveof &amp;lt;masterip&amp;gt; &amp;l">
+  <meta name="description" content="关于Redis主从复制配置">
 <meta name="keywords" content="redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis主从复制配置">
 <meta property="og:url" content="http://www.habuchimoe.top/2017/11/03/Redis主从复制配置-1/index.html">
 <meta property="og:site_name" content="HabuchiMoe&#39;s Blog">
-<meta property="og:description" content="复制产生新的主服务器配置文件redis.windows_M.conf  修改端口号为：6000   修改密码为：123456注：仅修改两项  复制产生新的从服务器配置文件redis.windows_S1.conf  修改端口号为：6001   修改密码为：123456（建议与主服务器密码一样）   修改并设置主服务器地址与端口   12345#slaveof &amp;lt;masterip&amp;gt; &amp;l">
+<meta property="og:description" content="关于Redis主从复制配置">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-03T07:38:34.740Z">
+<meta property="og:updated_time" content="2017-11-03T09:37:32.315Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis主从复制配置">
-<meta name="twitter:description" content="复制产生新的主服务器配置文件redis.windows_M.conf  修改端口号为：6000   修改密码为：123456注：仅修改两项  复制产生新的从服务器配置文件redis.windows_S1.conf  修改端口号为：6001   修改密码为：123456（建议与主服务器密码一样）   修改并设置主服务器地址与端口   12345#slaveof &amp;lt;masterip&amp;gt; &amp;l">
+<meta name="twitter:description" content="关于Redis主从复制配置">
   
   
     <link rel="icon" href="/favicon.ico">
@@ -147,7 +147,8 @@
     <div class="article-entry post-content" itemprop="articleBody">
       
             
-            <h4 id="复制产生新的主服务器配置文件"><a href="#复制产生新的主服务器配置文件" class="headerlink" title="复制产生新的主服务器配置文件"></a>复制产生新的主服务器配置文件</h4><pre><code>redis.windows_M.conf
+            <p>关于Redis主从复制配置<br><a id="more"></a></p>
+<h4 id="复制产生新的主服务器配置文件"><a href="#复制产生新的主服务器配置文件" class="headerlink" title="复制产生新的主服务器配置文件"></a>复制产生新的主服务器配置文件</h4><pre><code>redis.windows_M.conf
 </code></pre><ol>
 <li>修改端口号为：6000  </li>
 <li>修改密码为：123456<br>注：仅修改两项</li>
@@ -169,7 +170,7 @@
 <h6 id="2-aof"><a href="#2-aof" class="headerlink" title="2. aof"></a>2. aof</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">appendonly no/yes //是否启用</div><div class="line">appendfsync always //每次修改就同步</div><div class="line">			everysec //每秒同步一次</div><div class="line">            no //从不同步</div><div class="line">appendfilename &quot;appendonly.aof&quot; //aof文件</div></pre></td></tr></table></figure>
             <div class="post-copyright">
     <div class="content">
-        <p>最后更新： 2017年11月03日 15:38</p>
+        <p>最后更新： 2017年11月03日 17:37</p>
         <p>原始链接： <a class="post-url" href="/2017/11/03/Redis主从复制配置-1/" title="Redis主从复制配置">http://www.habuchimoe.top/2017/11/03/Redis主从复制配置-1/</a></p>
         <footer>
             <a href="http://www.habuchimoe.top">
@@ -202,7 +203,7 @@
             </a>
           </li>
           <li>
-            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.habuchimoe.top/2017/11/03/Redis主从复制配置-1/&title=《Redis主从复制配置》 — HabuchiMoe's Blog&source=" data-title="QQ">
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.habuchimoe.top/2017/11/03/Redis主从复制配置-1/&title=《Redis主从复制配置》 — HabuchiMoe's Blog&source=关于Redis主从复制配置" data-title="QQ">
               <i class="fa fa-qq"></i>
             </a>
           </li>
