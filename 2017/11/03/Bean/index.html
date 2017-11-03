@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Bean | HabuchiMoe&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="HabuchiMoe,HabuchiMoe's Blog" />
+  
+  <meta name="description" content="SpringBeanBean的生命周期 实例化JavaBean；   JavaBean实例的初始化，即通过IoC注入其依赖性；   基于Spring应该对JavaBean实例的使用；   IoC容器销毁JavaBean实例    bean作用域： singleton 每个springIOC容器一个bean定义一个对象实例   prototype 一个bean定义多个对象实例   request 一">
+<meta name="keywords" content="spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bean">
+<meta property="og:url" content="http://www.habuchimoe.top/2017/11/03/Bean/index.html">
+<meta property="og:site_name" content="HabuchiMoe&#39;s Blog">
+<meta property="og:description" content="SpringBeanBean的生命周期 实例化JavaBean；   JavaBean实例的初始化，即通过IoC注入其依赖性；   基于Spring应该对JavaBean实例的使用；   IoC容器销毁JavaBean实例    bean作用域： singleton 每个springIOC容器一个bean定义一个对象实例   prototype 一个bean定义多个对象实例   request 一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-03T07:38:21.253Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bean">
+<meta name="twitter:description" content="SpringBeanBean的生命周期 实例化JavaBean；   JavaBean实例的初始化，即通过IoC注入其依赖性；   基于Spring应该对JavaBean实例的使用；   IoC容器销毁JavaBean实例    bean作用域： singleton 每个springIOC容器一个bean定义一个对象实例   prototype 一个bean定义多个对象实例   request 一">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/pace.min.js"></script>
+  
+
+  
+  
+  <div style="display: none;">
+    <script src="//s22.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script>
+  </div>
+
+
+</head>
+
+<body>
+  <div id="container">
+      <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer">
+        <div id="header-menu" class="header-menu-pos animated">
+            <div class="header-menu-container">
+                <a href="/" class="left">
+                    <span class="site-title">HabuchiMoe&#39;s Blog</span>
+                </a>
+                <nav id="header-menu-nav" class="right">
+                    
+                    <a  href="/">
+                        <i class="fa fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a  href="/archives">
+                        <i class="fa fa-archive"></i>
+                        <span>Archives</span>
+                    </a>
+                    
+                    <a  href="/about">
+                        <i class="fa fa-user"></i>
+                        <span>About</span>
+                    </a>
+                    
+                </nav>
+                <a class="mobile-header-menu-button">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div id="header-row">
+            <div id="logo">
+                <a href="/">
+                    <img src="/images/logo.png" alt="logo">
+                </a>
+            </div>
+            <div class="header-info">
+                <div id="header-title">
+                    
+                    <h2>
+                        HabuchiMoe&#39;s Blog
+                    </h2>
+                    
+                </div>
+                <div id="header-description">
+                    
+                    <h3>
+                        一个专注 COPY 的开发
+                    </h3>
+                    
+                </div>
+            </div>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a title="HabuchiMoe" target="_blank" href="//www.habuchimoe.top">
+                            <i class="fa fa-home fa-2x"></i></a>
+                    
+                        <a title="Github" target="_blank" href="//github.com/habuchimoe">
+                            <i class="fa fa-github fa-2x"></i></a>
+                    
+                        <a title="Weibo" target="_blank" href="//weibo.com/111950825">
+                            <i class="fa fa-weibo fa-2x"></i></a>
+                    
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+      <div class="outer">
+        <section id="main" class="body-wrap"><article id="post-Bean" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="post-title" itemprop="name">
+      Bean
+    </h1>
+    <div class="post-title-bar">
+      <ul>
+          
+              <li>
+                  <i class="fa fa-book"></i>
+                  
+                      <a href="/categories/java/">java</a>
+                  
+              </li>
+          
+        <li>
+          <i class="fa fa-calendar"></i>  2017-11-03
+        </li>
+        <li>
+          <i class="fa fa-eye"></i>
+          <span id="busuanzi_value_page_pv"></span>
+        </li>
+      </ul>
+    </div>
+  
+
+          
+      </header>
+    
+    <div class="article-entry post-content" itemprop="articleBody">
+      
+            
+            <h1 id="SpringBean"><a href="#SpringBean" class="headerlink" title="SpringBean"></a>SpringBean</h1><h4 id="Bean的生命周期"><a href="#Bean的生命周期" class="headerlink" title="Bean的生命周期"></a>Bean的生命周期</h4><ol>
+<li>实例化JavaBean；  </li>
+<li>JavaBean实例的初始化，即通过IoC注入其依赖性；  </li>
+<li>基于Spring应该对JavaBean实例的使用；  </li>
+<li>IoC容器销毁JavaBean实例  </li>
+</ol>
+<h4 id="bean作用域："><a href="#bean作用域：" class="headerlink" title="bean作用域："></a>bean作用域：</h4><ul>
+<li><strong>singleton</strong> 每个springIOC容器一个bean定义一个对象实例  </li>
+<li><strong>prototype</strong> 一个bean定义多个对象实例  </li>
+<li><strong>request</strong> 一次Http请求一个bean定义一个实例，基于web的SpringApplicationContext有效  </li>
+<li><strong>session</strong> 一个HTTPsession中，一个bean定义一个对象实例，基于web的SpringApplicationContext有效  </li>
+<li><strong>global session</strong> 一个全局HTTPSession中，一个bean定义一个实例，基于web的SpringApplicationContext有效  </li>
+</ul>
+<h4 id="bean依赖"><a href="#bean依赖" class="headerlink" title="bean依赖"></a>bean依赖</h4><p>将一个bean设置为另一个bean的属性  </p>
+<h4 id="bean延迟初始化-lazy-init"><a href="#bean延迟初始化-lazy-init" class="headerlink" title="bean延迟初始化(lazy-init)"></a>bean延迟初始化(lazy-init)</h4><p>在第一次使用时才实例化</p>
+
+            <div class="post-copyright">
+    <div class="content">
+        <p>最后更新： 2017年11月03日 15:38</p>
+        <p>原始链接： <a class="post-url" href="/2017/11/03/Bean/" title="Bean">http://www.habuchimoe.top/2017/11/03/Bean/</a></p>
+        <footer>
+            <a href="http://www.habuchimoe.top">
+                <img src="/images/logo.png" alt="Habuchi Moe">
+                Habuchi Moe
+            </a>
+        </footer>
+    </div>
+</div>
+
+      
+    </div>
+    <footer class="article-footer">
+        
+        
+<div class="post-share">
+    <a href="javascript:;" id="share-sub" class="post-share-fab">
+        <i class="fa fa-share-alt"></i>
+    </a>
+    <div class="post-share-list" id="share-list">
+        <ul class="share-icons">
+          <li>
+            <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.habuchimoe.top/2017/11/03/Bean/&title=《Bean》 — HabuchiMoe's Blog&pic=http://www.habuchimoe.topimages/logo.png" data-title="微博">
+              <i class="fa fa-weibo"></i>
+            </a>
+          </li>
+          <li>
+            <a class="weixin share-sns" id="wxFab" href="javascript:;" data-title="微信">
+              <i class="fa fa-weixin"></i>
+            </a>
+          </li>
+          <li>
+            <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.habuchimoe.top/2017/11/03/Bean/&title=《Bean》 — HabuchiMoe's Blog&source=" data-title="QQ">
+              <i class="fa fa-qq"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.habuchimoe.top/2017/11/03/Bean/" data-title="Facebook">
+              <i class="fa fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Bean》 — HabuchiMoe's Blog&url=http://www.habuchimoe.top/2017/11/03/Bean/&via=http://www.habuchimoe.top" data-title="Twitter">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.habuchimoe.top/2017/11/03/Bean/" data-title="Google+">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        </ul>
+     </div>
+</div>
+<div class="post-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;" id="wxShare-close">×</a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=http://www.habuchimoe.top/2017/11/03/Bean/" alt="微信分享二维码">
+</div>
+
+<div class="mask"></div>
+
+        
+        <ul class="article-footer-menu">
+            
+            
+  <li class="article-footer-tags">
+    <i class="fa fa-tags"></i>
+      
+    <a href="/tags/spring/" class="color2">spring</a>
+      
+  </li>
+
+        </ul>
+        
+    </footer>
+  </div>
+</article>
+
+
+    <aside class="post-toc-pos post-toc-top" id="post-toc">
+        <nav class="post-toc-wrap">
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#SpringBean"><span class="post-toc-text">SpringBean</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Bean的生命周期"><span class="post-toc-text">Bean的生命周期</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#bean作用域："><span class="post-toc-text">bean作用域：</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#bean依赖"><span class="post-toc-text">bean依赖</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#bean延迟初始化-lazy-init"><span class="post-toc-text">bean延迟初始化(lazy-init)</span></a></li></ol></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+    
+
+<nav id="article-nav">
+  
+    <a href="/2017/11/03/Redis主从复制配置-1/" id="article-nav-newer" class="article-nav-link-wrap">
+
+      <span class="article-nav-title">
+        <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+        
+          Redis主从复制配置
+        
+      </span>
+    </a>
+  
+  
+    <a href="/2017/11/03/oC/" id="article-nav-older" class="article-nav-link-wrap">
+      <span class="article-nav-title">IoC&amp;DI</span>
+      <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+    </a>
+  
+</nav>
+
+
+
+    
+</section>
+        
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+      <p>
+        Powered by  <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Theme <a href="//github.com/wongminho/hexo-theme-miho" target="_blank">MiHo</a>
+      &copy; 2017 Habuchi Moe<br>
+      </p>
+    </div>
+  </div>
+</footer>
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  var mihoConfig = {
+      root: "http://www.habuchimoe.top",
+      animate: true,
+      isHome: false,
+      share: true
+  }
+</script>
+<div class="sidebar">
+    <div id="sidebar-search" title="Search">
+        <i class="fa fa-search"></i>
+    </div>
+    <div id="sidebar-category" title="Categories">
+        <i class="fa fa-book"></i>
+    </div>
+    <div id="sidebar-tag" title="Tags">
+        <i class="fa fa-tags"></i>
+    </div>
+    <div id="sidebar-top">
+        <span class="sidebar-top-icon"><i class="fa fa-angle-up"></i></span>
+    </div>
+</div>
+<div class="sidebar-menu-box" id="sidebar-menu-box">
+    <div class="sidebar-menu-box-container">
+        <div id="sidebar-menu-box-categories">
+            <a class="category-link" href="/categories/java/">java</a><a class="category-link" href="/categories/redis/">redis</a>
+        </div>
+        <div id="sidebar-menu-box-tags">
+            <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 20px;">spring</a>
+        </div>
+    </div>
+    <a href="javascript:;" class="sidebar-menu-box-close">&times;</a>
+</div>
+<div class="mobile-header-menu-nav" id="mobile-header-menu-nav">
+    <div class="mobile-header-menu-container">
+        <span class="title">Menus</span>
+        <ul class="mobile-header-menu-navbar">
+            
+            <li>
+                <a  href="/">
+                    <i class="fa fa-home"></i><span>Home</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/archives">
+                    <i class="fa fa-archive"></i><span>Archives</span>
+                </a>
+            </li>
+            
+            <li>
+                <a  href="/about">
+                    <i class="fa fa-user"></i><span>About</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="mobile-header-tag-container">
+        <span class="title">Tags</span>
+        <div id="mobile-header-container-tags">
+            <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 20px;">spring</a>
+        </div>
+    </div>
+</div>
+<div class="search-wrap">
+    <span class="search-close">&times;</span>
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+            <i class="icon icon-lg icon-chevron-left"></i>
+        </a>
+        <input class="search-field" placeholder="Search..." id="keywords">
+        <a id="search-submit" href="javascript:;">
+            <i class="fa fa-search"></i>
+        </a>
+    <div class="search-container" id="search-container">
+        <ul class="search-result" id="search-result">
+        </ul>
+    </div>
+</div>
+
+<div id="search-tpl">
+    <li class="search-result-item">
+        <a href="{url}" class="search-item-li">
+            <span class="search-item-li-title" title="{title}">{title}</span>
+        </a>
+    </li>
+</div>
+<script src="/js/search.js"></script>
+<script src="/js/main.js"></script>
+
+
+  <script src="//cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
+  <div id="particles"></div>
+  <script src="/js/particles.js"></script>
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  <script src="//cdn.bootcss.com/scrollReveal.js/3.0.5/scrollreveal.js"></script>
+  <script src="/js/animate.js"></script>
+
+  </div>
+</body>
+</html>
